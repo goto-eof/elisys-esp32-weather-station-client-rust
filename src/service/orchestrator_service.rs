@@ -54,7 +54,7 @@ pub fn orchestrate() {
         info!("lux: {:?}", lux);
         info!("submiting data...");
         if client_service
-            .send_alert(&mac_address, None, None, None, Some(lux), None)
+            .send_alert(&mac_address, None, None, None, Some(lux), Some(lux > 3.0))
             .is_err()
         {
             error!("cannot send data to server");
