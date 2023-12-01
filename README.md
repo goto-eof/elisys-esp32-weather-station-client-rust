@@ -1,6 +1,6 @@
 # Elisys | ESP32 IDF | Weather Station (Rust)
 
-Elisys ESP32 Weather Station is a weather station that reads data from sensors and send them to a [server](https://github.com/goto-eof/elisys-home-automation-server-java).
+Elisys ESP32 Weather Station is a weather station that reads data from sensors like light sensor, temperature sensor, humidity and pressure sensors and sends them to a [server](https://github.com/goto-eof/elisys-home-automation-server-java).
 
 ## Features
 
