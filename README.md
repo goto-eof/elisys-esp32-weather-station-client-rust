@@ -5,8 +5,8 @@ Elisys ESP32 Weather Station is a weather station that reads data from sensors l
 ## Features
 
 - read data from light sensor (lux value);
-- read temperature from a sensor (WIP);
-- read humidity from a sensor (WIP);
+- read temperature from a sensor;
+- read humidity from a sensor;
 - read pressure from a sensor (WIP).
 
 # GPIO
