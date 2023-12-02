@@ -55,6 +55,7 @@ serde_json = { version = "1.0.108", features = ["raw_value"] }
 cron = "0.12.0"
 chrono = "0.4.31"
 bh1750-ehal = "0.0.2"
+dht-sensor = "0.2.1"
 
 [build-dependencies]
 embuild = "0.31.2"

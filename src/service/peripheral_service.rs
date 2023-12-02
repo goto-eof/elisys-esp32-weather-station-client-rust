@@ -1,8 +1,9 @@
 use bh1750_ehal::BH1750;
+use dht_sensor::{dht11, DhtError, DhtReading};
 use embedded_svc::wifi::{AuthMethod, ClientConfiguration, Configuration};
 use esp_idf_hal::{
-    delay::{self, Ets},
-    gpio::{Gpio5, Output, PinDriver},
+    delay::{self, Ets, FreeRtos},
+    gpio::{Gpio15, Gpio5, InputOutput, Output, PinDriver},
     i2c::{I2cConfig, I2cDriver},
     peripherals::Peripherals,
 };
@@ -11,6 +12,7 @@ use esp_idf_svc::{
     nvs::EspDefaultNvsPartition,
     wifi::{BlockingWifi, EspWifi, WifiDeviceId},
 };
+use esp_idf_sys::EspError;
 use log::info;
 
 use crate::util::thread_util;
@@ -21,6 +23,7 @@ const TIME_LONG: u64 = 1000;
 pub struct PeripheralService {
     led: PinDriver<'static, Gpio5, Output>,
     bh1750: BH1750<I2cDriver<'static>, Ets>,
+    temperature_and_humidity_sensor: PinDriver<'static, Gpio15, InputOutput>,
     wifi: BlockingWifi<EspWifi<'static>>,
     wifi_ssid: String,
     wifi_password: String,
@@ -55,8 +58,16 @@ impl PeripheralService {
                 .unwrap();
         info!("configuration of light sensor completed");
 
+        info!("configuring temperature and humidity sensor...");
+        let pin: Gpio15 = peripherals.pins.gpio15;
+        let mut temperature_and_humidity_sensor = PinDriver::input_output(pin).unwrap();
+        temperature_and_humidity_sensor.set_high().unwrap();
+        FreeRtos::delay_ms(1000);
+        info!("temperature and humidity sensor configuration done!");
+
         let peripheral_service = PeripheralService {
             led,
+            temperature_and_humidity_sensor,
             wifi,
             wifi_ssid: wifi_ssid.to_owned(),
             wifi_password: wifi_password.to_owned(),
@@ -73,6 +84,13 @@ impl PeripheralService {
             }
         }
         return true;
+    }
+
+    pub fn get_temperature_and_humidity(&mut self) -> Result<(i8, u8), DhtError<EspError>> {
+        match dht11::Reading::read(&mut delay::Ets, &mut self.temperature_and_humidity_sensor) {
+            Ok(r) => return Ok((r.temperature, r.relative_humidity)),
+            Err(e) => return Err(e),
+        }
     }
 
     pub fn get_lux_measure(&mut self) -> u32 {

@@ -51,10 +51,21 @@ pub fn orchestrate() {
 
         info!("---<< Gathering information from sensors >>---");
         let lux = peripheral_service.get_lux_measure() as f32;
+        let (temperature, humidity) = match peripheral_service.get_temperature_and_humidity() {
+            Err(_) => (0, 0),
+            Ok(data) => data,
+        };
         info!("lux: {:?}", lux);
         info!("submiting data...");
         if client_service
-            .send_alert(&mac_address, None, None, None, Some(lux), Some(lux > 3.0))
+            .send_alert(
+                &mac_address,
+                Some(temperature as f32),
+                Some(humidity as f32),
+                None,
+                Some(lux),
+                Some(lux > 3.0),
+            )
             .is_err()
         {
             error!("cannot send data to server");
