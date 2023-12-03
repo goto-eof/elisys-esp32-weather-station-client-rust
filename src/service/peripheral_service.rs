@@ -86,9 +86,9 @@ impl PeripheralService {
         return true;
     }
 
-    pub fn get_temperature_and_humidity(&mut self) -> Result<(i8, u8), DhtError<EspError>> {
+    pub fn get_temperature_and_humidity(&mut self) -> Result<(f32, f32), DhtError<EspError>> {
         match dht11::Reading::read(&mut delay::Ets, &mut self.temperature_and_humidity_sensor) {
-            Ok(r) => return Ok((r.temperature, r.relative_humidity)),
+            Ok(r) => return Ok((r.temperature as f32, r.relative_humidity as f32)),
             Err(e) => return Err(e),
         }
     }
