@@ -17,3 +17,6 @@ Elisys ESP32 Weather Station is a weather station that reads data from sensors l
 | GPIO15  | termometer and humidity sensor  |
 | GPIO21  | SDA - light sensor              |
 | GPIO22  | SCL - light sensor              |
+
+
+Tested on ESP32-DevKitC and developed on Ubuntu.
