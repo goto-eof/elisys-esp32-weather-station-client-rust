@@ -1,6 +1,6 @@
 # Elisys ESP32 Weather Station (Rust)
 
-Elisys ESP32 Weather Station is a weather station that reads data from sensors like light sensor, temperature sensor, humidity and pressure sensors and sends then the values to a server like [Elisys Home Automation Server (Java)](https://github.com/goto-eof/elisys-home-automation-server-java). This software belongs to the [Elisys Home Automation Software suite](https://github.com/goto-eof/elisys-home-automation-server-java).
+Elisys ESP32 Weather Station is a weather station, implemented using Rust programming language, that reads data from sensors like light sensor, temperature sensor, humidity and pressure sensors and sends then the values to a server like [Elisys Home Automation Server (Java)](https://github.com/goto-eof/elisys-home-automation-server-java). This software belongs to the [Elisys Home Automation Software suite](https://github.com/goto-eof/elisys-home-automation-server-java).
 
 ## Features
 
