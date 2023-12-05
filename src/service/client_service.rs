@@ -5,7 +5,7 @@ use crate::{
     },
     dto::{
         config_request::ConfigRequest, config_response::Configuration,
-        request_submit::RequestSubmit, request_i_am_alive::RequestIAmAlive,
+        request_i_am_alive::RequestIAmAlive, request_submit::RequestSubmit,
     },
 };
 use anyhow::{Error, Ok};
@@ -32,7 +32,7 @@ impl ClientService {
         mac_address: &str,
         temperature: Option<f32>,
         humidity: Option<f32>,
-        pressure: Option<f32>,
+        pressure: Option<f64>,
         lux: Option<f32>,
         light: Option<bool>,
     ) -> anyhow::Result<(), anyhow::Error> {

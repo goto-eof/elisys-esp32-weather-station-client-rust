@@ -7,7 +7,7 @@ pub struct RequestSubmit {
     mac_address: String,
     temperature: Option<f32>,
     humidity: Option<f32>,
-    pressure: Option<f32>,
+    pressure: Option<f64>,
     lux: Option<f32>,
     light: Option<bool>,
 }
@@ -17,7 +17,7 @@ impl RequestSubmit {
         mac_address: String,
         temperature: Option<f32>,
         humidity: Option<f32>,
-        pressure: Option<f32>,
+        pressure: Option<f64>,
         lux: Option<f32>,
         light: Option<bool>,
     ) -> RequestSubmit {
