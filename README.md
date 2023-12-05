@@ -20,9 +20,9 @@ Elisys ESP32 Weather Station is a weather station, implemented using Rust progra
 
 Tested on ESP32-DevKitC and developed on Linux (Ubuntu).
 
-# Photos
+# Pictures
 
-| Photo                         |
+| Picture                       |
 | ----------------------------- |
 | ![DHT11](/images/DHT11.jpg)   |
 | DHT11                         |
