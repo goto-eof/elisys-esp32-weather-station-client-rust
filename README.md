@@ -29,4 +29,8 @@ Tested on ESP32-DevKitC and developed on Linux (Ubuntu).
 | ![BH1750](/images/BH1750.jpg) |
 | BH1750                        |
 
+# Known issues
+
+Sometimes the DHT11 temperature and humidity sensor goes in timeout. It depends on the driver that is used in this application. If the the DTH11 goes always in timeout, then I suggest you to changed the driver (try another rust crate -> for DHT11 there are about 3-5 drivers) or write yourself a driver based on the official documentation of the device.
+
 If you found a bug, please ping me [here](https://andre-i.eu/#contactme).
