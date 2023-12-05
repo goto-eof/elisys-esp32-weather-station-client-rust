@@ -22,9 +22,11 @@ Tested on ESP32-DevKitC and developed on Linux (Ubuntu).
 
 # Photos
 
-| Photo                         | Description |
-| ----------------------------- | ----------- |
-| ![DHT11](/images/DHT11.jpg)   | DHT11       |
-| ![BH1750](/images/BH1750.jpg) | BH1750      |
+| Photo                         |
+| ----------------------------- |
+| ![DHT11](/images/DHT11.jpg)   |
+| DHT11                         |
+| ![BH1750](/images/BH1750.jpg) |
+| BH1750                        |
 
 If you found a bug, please ping me [here](https://andre-i.eu/#contactme).
