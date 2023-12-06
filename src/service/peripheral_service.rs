@@ -99,6 +99,21 @@ impl PeripheralService {
         }
     }
 
+    pub fn get_temperature_and_humidity_insistently(
+        &mut self,
+        times: u16,
+    ) -> Result<(f32, f32), dhterr<EspError>> {
+        info!("insisting: {}", times);
+        let result = self.get_temperature_and_humidity();
+        if times == 0 {
+            return result;
+        }
+        if result.is_err() {
+            return self.get_temperature_and_humidity_insistently(times - 1);
+        }
+        return result;
+    }
+
     pub fn get_lux_measure(&mut self) -> u32 {
         self.bh1750
             .start_measurement(bh1750_ehal::ContinuesMeasurement::HIHGT_RES2);

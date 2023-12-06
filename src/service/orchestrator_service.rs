@@ -51,13 +51,14 @@ pub fn orchestrate() {
 
         info!("---<< Gathering information from sensors >>---");
         let lux = peripheral_service.get_lux_measure() as f32;
-        let (temperature, humidity) = match peripheral_service.get_temperature_and_humidity() {
-            Err(e) => {
-                error!("e: {:?}", e);
-                (None, None)
-            }
-            Ok(data) => (Some(data.0), Some(data.1)),
-        };
+        let (temperature, humidity) =
+            match peripheral_service.get_temperature_and_humidity_insistently(100) {
+                Err(e) => {
+                    error!("e: {:?}", e);
+                    (None, None)
+                }
+                Ok(data) => (Some(data.0), Some(data.1)),
+            };
         let pressure = None;
         info!(
             "lux: {:?}, temperature: {:?}, humidity: {:?}, pressure: {:?}",

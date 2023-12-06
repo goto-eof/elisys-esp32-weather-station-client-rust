@@ -1,6 +1,6 @@
 [package]
-name = "esp32-weather-station-rust"
-version = "0.2.0"
+name = "elisys-esp32-weather-station-rust"
+version = "0.3.0"
 authors = ["Andrei Dodu"]
 edition = "2021"
 resolver = "2"
