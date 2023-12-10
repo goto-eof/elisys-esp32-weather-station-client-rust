@@ -4,6 +4,7 @@ Elisys ESP32 Weather Station is a weather station, implemented using Rust progra
 
 ## Features
 
+- register the device on the remote server;
 - read data from light sensor (Lux value, sensor: BH1750);
 - read temperature from a sensor (sensor: DHT11);
 - read humidity from a sensor (sensor: DHT11);
