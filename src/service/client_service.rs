@@ -1,11 +1,13 @@
 use crate::{
     config::config::{
-        DEFAULT_ALERT_URL, DEFAULT_I_AM_ALIVE_URL, TEMPERATURE_SENSOR_UNIT_OF_MEASURE,
+        DEFAULT_ALERT_URL, DEFAULT_I_AM_ALIVE_URL, DEVICE_DESCRIPTION, DEVICE_NAME,
+        REGISTER_DEVICE_URL, TEMPERATURE_SENSOR_UNIT_OF_MEASURE,
         WEATHER_SENSOR_SUPPLY_INTERVAL_SECONDS,
     },
     dto::{
         config_request::ConfigRequest, config_response::Configuration,
-        request_i_am_alive::RequestIAmAlive, request_submit::RequestSubmit,
+        register_device::RegisterDeviceDTO, request_i_am_alive::RequestIAmAlive,
+        request_submit::RequestSubmit,
     },
 };
 use anyhow::{Error, Ok};
@@ -14,6 +16,9 @@ use esp_idf_svc::http::client::EspHttpConnection;
 use esp_idf_sys as _;
 use log::{error, info};
 use std::result::Result::Ok as StandardOk;
+
+pub const DEVICE_TYPE: &str = "WeatherStation";
+
 pub struct ClientService {
     alert_url: String,
     i_am_alive_url: String,
@@ -25,6 +30,27 @@ impl ClientService {
             alert_url: alert_url.to_owned(),
             i_am_alive_url: i_am_alive_url.to_owned(),
         }
+    }
+
+    pub fn register_device(&self, mac_address: &str) -> anyhow::Result<(), anyhow::Error> {
+        let client = HttpClient::wrap(EspHttpConnection::new(&Default::default())?);
+
+        let payload = serde_json::to_string(&RegisterDeviceDTO::new(
+            mac_address.to_owned(),
+            DEVICE_TYPE.into(),
+            DEVICE_NAME.into(),
+            DEVICE_DESCRIPTION.into(),
+        ))
+        .unwrap();
+        let payload = payload.as_bytes();
+
+        info!("trying to send data...");
+        let result = post_request(payload, client, REGISTER_DEVICE_URL);
+        info!("data sent? {}", !result.is_err());
+        return match result {
+            Err(e) => Err(e.into()),
+            StandardOk(_) => Ok(()),
+        };
     }
 
     pub fn send_alert(
@@ -158,6 +184,9 @@ fn post_request(
 
     let status = response.status();
     info!("<- {}", status);
+    if !(status >= 200 && status <= 299) {
+        return Err(Error::msg(format!("Invalid response status: {}", status)));
+    }
     let mut buf = [0u8; 4086];
     let bytes_read = io::try_read_full(&mut response, &mut buf).map_err(|e| e.0);
 

@@ -22,3 +22,9 @@ pub const WEATHER_SENSOR_SUPPLY_INTERVAL_SECONDS: u64 = 30;
 // This is the default crontab value if server value is wrong
 // pub const DEFAULT_CRONTAB: &str =
 // "0-59   0-59   0-23     1-31       Jan-Dec  Mon,Tue,Wed,Thu,Fri,Sat,Sun  2023-2100";
+// Device registration endpoint
+pub const REGISTER_DEVICE_URL: &str = "http://192.168.1.102:8080/api/v1/device/register";
+// Device name
+pub const DEVICE_NAME: &str = "Weather Station";
+// Device description
+pub const DEVICE_DESCRIPTION: &str = "Weather Station Device";

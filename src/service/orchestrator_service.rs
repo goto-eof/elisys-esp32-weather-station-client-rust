@@ -41,6 +41,16 @@ pub fn orchestrate() {
 
     synchronize_clock();
 
+    let register_device_result = client_service.register_device(&mac_address);
+    if register_device_result.is_err() {
+        error!(
+            "failed to register the device: {:?}",
+            register_device_result
+        );
+    } else {
+        info!("device registered with success!");
+    }
+
     loop {
         while !peripheral_service.retry_wifi_connection_if_necessary_and_return_status() {
             peripheral_service.led_blink_3_time_long();
@@ -51,6 +61,7 @@ pub fn orchestrate() {
 
         info!("---<< Gathering information from sensors >>---");
         let lux = peripheral_service.get_lux_measure() as f32;
+
         let (temperature, humidity) =
             match peripheral_service.get_temperature_and_humidity_insistently(100) {
                 Err(e) => {
