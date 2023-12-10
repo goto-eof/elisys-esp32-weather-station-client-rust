@@ -5,7 +5,7 @@ use super::{
 use crate::{
     config::config::{self, CONFIGURATION_URL},
     dto::config_response::Configuration,
-    service::client_service::get_default_configuration,
+    service::client_service::{get_default_configuration, register_device},
     util::thread_util,
 };
 use core::result::Result::Ok as StandardOk;
@@ -14,6 +14,16 @@ use log::{error, info};
 pub fn orchestrate() {
     let mut peripheral_service = PeripheralService::new(config::WIFI_SSID, config::WIFI_PASS);
     let mac_address = peripheral_service.get_mac_address();
+
+    let register_device_result = register_device(&mac_address);
+    if register_device_result.is_err() {
+        error!(
+            "failed to register the device: {:?}",
+            register_device_result
+        );
+    } else {
+        info!("device registered with success!");
+    }
 
     let configuration: Result<Configuration, anyhow::Error> =
         get_configuration(CONFIGURATION_URL, &mac_address);
@@ -40,16 +50,6 @@ pub fn orchestrate() {
     peripheral_service.led_blink_1_time_long();
 
     synchronize_clock();
-
-    let register_device_result = client_service.register_device(&mac_address);
-    if register_device_result.is_err() {
-        error!(
-            "failed to register the device: {:?}",
-            register_device_result
-        );
-    } else {
-        info!("device registered with success!");
-    }
 
     loop {
         while !peripheral_service.retry_wifi_connection_if_necessary_and_return_status() {

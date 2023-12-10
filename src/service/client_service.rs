@@ -32,27 +32,6 @@ impl ClientService {
         }
     }
 
-    pub fn register_device(&self, mac_address: &str) -> anyhow::Result<(), anyhow::Error> {
-        let client = HttpClient::wrap(EspHttpConnection::new(&Default::default())?);
-
-        let payload = serde_json::to_string(&RegisterDeviceDTO::new(
-            mac_address.to_owned(),
-            DEVICE_TYPE.into(),
-            DEVICE_NAME.into(),
-            DEVICE_DESCRIPTION.into(),
-        ))
-        .unwrap();
-        let payload = payload.as_bytes();
-
-        info!("trying to send data...");
-        let result = post_request(payload, client, REGISTER_DEVICE_URL);
-        info!("data sent? {}", !result.is_err());
-        return match result {
-            Err(e) => Err(e.into()),
-            StandardOk(_) => Ok(()),
-        };
-    }
-
     pub fn send_alert(
         &self,
         mac_address: &str,
@@ -217,4 +196,25 @@ pub fn get_default_configuration(e: Error) -> Configuration {
         temperature_sensor_unit_of_measure: TEMPERATURE_SENSOR_UNIT_OF_MEASURE.to_owned(),
         weather_sensor_supply_interval_seconds: WEATHER_SENSOR_SUPPLY_INTERVAL_SECONDS,
     }
+}
+
+pub fn register_device(mac_address: &str) -> anyhow::Result<(), anyhow::Error> {
+    let client = HttpClient::wrap(EspHttpConnection::new(&Default::default())?);
+
+    let payload = serde_json::to_string(&RegisterDeviceDTO::new(
+        mac_address.to_owned(),
+        DEVICE_TYPE.into(),
+        DEVICE_NAME.into(),
+        DEVICE_DESCRIPTION.into(),
+    ))
+    .unwrap();
+    let payload = payload.as_bytes();
+
+    info!("trying to send data...");
+    let result = post_request(payload, client, REGISTER_DEVICE_URL);
+    info!("data sent? {}", !result.is_err());
+    return match result {
+        Err(e) => Err(e.into()),
+        StandardOk(_) => Ok(()),
+    };
 }
