@@ -163,7 +163,7 @@ fn post_request(
 
     let status = response.status();
     info!("<- {}", status);
-    if !(status >= 200 && status <= 299) {
+    if !(status >= 200 && status <= 204) {
         return Err(Error::msg(format!("Invalid response status: {}", status)));
     }
     let mut buf = [0u8; 4086];
