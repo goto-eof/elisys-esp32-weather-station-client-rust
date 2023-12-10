@@ -32,6 +32,6 @@ Tested on ESP32-DevKitC and developed on Linux (Ubuntu).
 
 # Known issues
 
-Sometimes the DHT11 temperature and humidity sensor goes in timeout. It depends on the driver that is used in this application. I introduced an insistent check of the sensor data (it tries, if I am not wrong, about 100 times, before give up). If your DTH11 goes **always** in timeout, then I suggest you to changed the driver (try another rust crate: for DHT11 there are about 3-5 drivers) or write yourself a driver based on the official documentation of the device.
+Sometimes the DHT11 temperature and humidity sensor goes in timeout. It depends on the driver that is used in this application. I introduced an insistent check of the sensor data (it tries, if I am not wrong, about 100 times, before giving up). If your DTH11 goes **always** in timeout, then I suggest you to changed the driver (try another rust crate: for DHT11 there are about 3-5 drivers) or write yourself a driver based on the official documentation of the device.
 
 If you found a bug, please ping me [here](https://andre-i.eu/#contactme).
